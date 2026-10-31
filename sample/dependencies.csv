@@ -1,0 +1,31 @@
+service_id,depends_on,type,notes
+checkout,payments-gw,hard,
+checkout,orders,hard,
+checkout,identity,hard,
+checkout,catalog,hard,Price and availability at purchase
+checkout,inventory,hard,
+checkout,feature-flags,soft,Falls back to defaults
+checkout,search,soft,
+payments-gw,secrets,hard,
+payments-gw,dns,hard,
+orders,order-db,hard,
+orders,message-bus,hard,
+orders,inventory,hard,
+orders,secrets,hard,
+inventory,message-bus,hard,
+inventory,catalog,hard,
+catalog,dns,hard,
+identity,customer-db,hard,
+identity,secrets,hard,
+identity,dns,hard,
+search,catalog,hard,
+notifications,message-bus,hard,
+notifications,customer-db,soft,
+fulfillment,message-bus,hard,
+fulfillment,order-db,hard,
+reporting,order-db,hard,
+support-portal,orders,hard,
+support-portal,identity,hard,
+message-bus,dns,hard,
+secrets,feature-flags,hard,Bootstrap config read at startup
+feature-flags,secrets,hard,API keys for flag service

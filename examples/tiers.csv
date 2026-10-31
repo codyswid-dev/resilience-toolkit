@@ -1,0 +1,18 @@
+id,name,owner,base_tier,tier,tier_reason,target_rto_hours,target_rpo_minutes
+catalog,Product Catalog,Commerce Eng,2,1,inherited from checkout,8,60
+checkout,Checkout,Commerce Eng,1,1,impact/MTPD,1,5
+customer-db,Customer Database,Data Platform,2,1,inherited from identity,2,5
+dns,DNS,Network Eng,1,1,impact/MTPD,1,
+feature-flags,Feature Flags,Platform Eng,3,1,inherited from secrets,24,
+identity,Identity & Login,Platform Eng,1,1,impact/MTPD,2,5
+inventory,Inventory Service,Supply Chain Eng,2,1,inherited from checkout,8,15
+message-bus,Message Bus,Platform Eng,1,1,impact/MTPD,2,0
+order-db,Order Database,Data Platform,2,1,inherited from orders,6,5
+orders,Order Service,Commerce Eng,2,1,inherited from checkout,4,5
+payments-gw,Payments Gateway,Payments Eng,1,1,impact/MTPD,1,0
+secrets,Secrets Manager,Security Eng,1,1,impact/MTPD,1,0
+fulfillment,Fulfillment Integration,Supply Chain Eng,2,2,impact/MTPD,12,15
+reporting,Finance Reporting,Finance Systems,2,2,impact/MTPD,48,1440
+search,Search,Discovery Eng,2,2,impact/MTPD,8,
+notifications,Notifications,Engagement Eng,3,3,impact/MTPD,24,
+support-portal,Support Portal,Support Ops,3,3,impact/MTPD,24,60

@@ -1,0 +1,18 @@
+id,name,owner,business_function,impact_financial,impact_customer,impact_regulatory,impact_operational,mtpd_hours,target_rto_hours,target_rpo_minutes
+checkout,Checkout,Commerce Eng,Online sales,5,5,3,4,2,1,5
+payments-gw,Payments Gateway,Payments Eng,Card authorization,5,5,4,4,2,1,0
+orders,Order Service,Commerce Eng,Order capture,4,4,2,4,8,4,5
+inventory,Inventory Service,Supply Chain Eng,Stock levels,3,3,1,4,24,8,15
+catalog,Product Catalog,Commerce Eng,Product data,3,3,1,3,24,8,60
+search,Search,Discovery Eng,Product search,3,4,1,2,24,8,
+identity,Identity & Login,Platform Eng,Customer sign-in,4,5,3,4,4,2,5
+customer-db,Customer Database,Data Platform,Customer records,4,4,4,4,8,2,5
+order-db,Order Database,Data Platform,Order records,4,4,4,4,8,6,5
+message-bus,Message Bus,Platform Eng,Async events,3,3,1,5,8,2,0
+notifications,Notifications,Engagement Eng,Email and SMS,2,3,1,2,72,24,
+fulfillment,Fulfillment Integration,Supply Chain Eng,Warehouse orders,3,3,1,4,24,12,15
+reporting,Finance Reporting,Finance Systems,Revenue reporting,3,1,4,2,72,48,1440
+support-portal,Support Portal,Support Ops,Customer support,2,3,1,3,48,24,60
+feature-flags,Feature Flags,Platform Eng,Release control,2,2,1,3,72,24,
+secrets,Secrets Manager,Security Eng,Credential storage,2,2,2,5,4,1,0
+dns,DNS,Network Eng,Name resolution,2,2,1,5,4,1,
