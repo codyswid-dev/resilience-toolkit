@@ -1,0 +1,19 @@
+control_id,collected_on,result,source,reference
+AC-01,2026-06-30,pass,Ticketing,Q2 joiner sample (25 of 25 approved)
+AC-01,2026-09-30,pass,Ticketing,Q3 joiner sample (25 of 25 approved)
+AC-02,2026-03-31,pass,IGA tool,Q1 review signed off
+AC-02,2026-06-30,pass,IGA tool,Q2 review signed off
+AC-03,2026-11-14,pass,IdP export,Policy export and exception list
+AC-04,2026-08-20,pass,PAM tool,Q3 privileged account review
+LG-01,2026-11-02,pass,SIEM,Ingestion health report
+LG-02,2026-09-30,pass,SIEM,September triage metrics
+LG-02,2026-10-31,pass,SIEM,October triage metrics
+IR-01,2025-11-20,pass,Tabletop,Ransomware tabletop after-action report
+CM-01,2026-11-14,pass,CI pipeline,Branch protection and approval report
+BK-01,2026-11-15,pass,Backup console,Daily job success report
+BK-02,2026-07-15,pass,Restore log,Orders DB restore to staging
+BK-02,2026-10-20,fail,Restore log,Catalog DB restore missed 4h RTO (issue INC-2291)
+DR-01,2026-03-10,pass,DR exercise,Tier 1 failover exercise report
+VR-01,2026-10-01,pass,TPRM tool,Q3 onboarding sample
+HR-01,2026-07-01,pass,Walkthrough,H1 walkthrough checklist
+AC-09,2026-10-15,pass,IGA tool,Uploaded under a retired control ID

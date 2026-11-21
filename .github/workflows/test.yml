@@ -22,3 +22,7 @@ jobs:
         run: |
           python -m tiering.tier sample/services.csv sample/dependencies.csv --report /tmp/report.md
           diff -u examples/tiering-report.md /tmp/report.md
+      - name: Sample control evidence report is current
+        run: |
+          python -m controls.check sample/controls --as-of 2026-11-15 --report /tmp/controls.md
+          diff -u examples/control-evidence-report.md /tmp/controls.md
