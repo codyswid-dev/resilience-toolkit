@@ -1,19 +1,21 @@
 # Resilience Toolkit
 
-Tools for the analysis work behind a business continuity and disaster recovery program: tiering services by impact, checking a dependency map for recovery gaps, and drafting BIAs and DR test plans with Claude Code.
+Tools for the analysis work behind resilience and GRC programs: tiering services by impact, checking a dependency map for recovery gaps, checking a unified control set against SOC 2, ISO 27001 and NIST 800-53 and the evidence behind it, and drafting BIAs, DR test plans and audit evidence requests with Claude Code.
 
-All data in this repository is synthetic. The sample is a fictional online retailer with 17 services.
+All data in this repository is synthetic. The sample is a fictional online retailer with 17 services and 14 controls.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
 | [`tiering/`](tiering/) | Python script that assigns recovery tiers, propagates them through dependencies, and reports gaps. Standard library only. |
+| [`controls/`](controls/) | Python script that checks a unified control set against framework requirements and the evidence behind each control, and lists what each owner needs to produce. Standard library only. |
 | [`.claude/skills/bia-draft/`](.claude/skills/bia-draft/SKILL.md) | Claude Code skill that drafts a Business Impact Analysis for one service from the inventory and tiering output. |
 | [`.claude/skills/dr-test-plan/`](.claude/skills/dr-test-plan/SKILL.md) | Claude Code skill that drafts a DR test plan, with the recovery sequence taken from the dependency map. |
+| [`.claude/skills/audit-readiness/`](.claude/skills/audit-readiness/SKILL.md) | Claude Code skill that assesses audit readiness as of the fieldwork date and drafts evidence requests per control owner. |
 | [`templates/`](templates/) | BIA, DR test plan, and chaos experiment templates in Markdown. |
-| [`sample/`](sample/) | Synthetic service inventory and dependency map. |
-| [`examples/`](examples/) | Output from the sample: [tiering report](examples/tiering-report.md) and a [drafted BIA](examples/bia-orders.md). |
+| [`sample/`](sample/) | Synthetic service inventory, dependency map, and control set with mappings and evidence. |
+| [`examples/`](examples/) | Output from the sample: [tiering report](examples/tiering-report.md), [control evidence report](examples/control-evidence-report.md), and a [drafted BIA](examples/bia-orders.md). |
 
 ## Why dependency analysis matters
 
@@ -87,6 +89,40 @@ The thresholds are constants at the top of [`tier.py`](tiering/tier.py) and shou
 
 **Dependency map.** The report includes a Mermaid diagram, which GitHub renders directly.
 
+## Control evidence checker
+
+A unified control library exists so a control is tested once and that one test counts for every framework it maps to. The weak point is the evidence: a quarterly access review that slipped a quarter quietly leaves requirements in three frameworks unsupported, and nobody sees it until fieldwork.
+
+```bash
+python -m controls.check sample/controls --as-of 2026-11-15
+```
+
+**Input.** Four CSV files in one directory: `controls.csv` (owner, test frequency, automated or manual), `requirements.csv` (the framework requirements in scope), `mappings.csv` (control to requirement, many to many), and `evidence.csv` (control, date collected, pass or fail, reference).
+
+**Control status.** Each control's latest evidence is compared with its test frequency (continuous 7 days, weekly 10, monthly 35, quarterly 100, semiannual 190, annual 380, each including grace). A control is Current, Due soon, Stale, Failing, or Missing evidence. The windows are constants at the top of [`check.py`](controls/check.py).
+
+**Requirement status.** A requirement is Met if at least one mapped control has current, passing evidence; At risk if it has mapped controls but none qualify; and a Gap if nothing maps to it.
+
+**Findings.**
+
+| Finding | Severity | Meaning |
+|---|---|---|
+| Unmapped requirement | High | An in-scope requirement has no control. |
+| Requirement at risk | High | Mapped controls exist, but none has current passing evidence. |
+| Failed test | High | The control's latest test failed. Needs an issue, remediation, and a retest. |
+| Missing evidence | High | No evidence on file for the control. |
+| Requirement lapsing | Medium | The requirement is met only by evidence that expires soon. |
+| Stale evidence | Medium | The latest evidence is older than the test frequency allows. |
+| No owner | Medium | Nobody is accountable for testing the control. |
+| Unknown control ID | Medium | A mapping or evidence row names a control that is not in the set. |
+| Evidence due soon | Low | Evidence expires within a quarter of its window (at most 30 days). |
+| Unmapped control | Low | The control supports no in-scope requirement. Map it or stop testing it. |
+| Out-of-scope mapping | Low | The control maps to a requirement that is not in scope. |
+
+**Output.** Coverage by framework, findings, unmet requirements, controls sorted by how many requirements depend on them, and an evidence request list grouped by owner. `--status-csv` writes per-requirement status for a dashboard or GRC tool import, and `--fail-on high` returns a non-zero exit code for a CI gate. See the [sample report](examples/control-evidence-report.md).
+
+**Your own data.** Most GRC platforms (ServiceNow GRC, Archer, and similar) and spreadsheet control libraries can export controls, framework mappings, and evidence or attestation records in roughly this shape. The framework requirement titles in the sample are short paraphrases. Use the official text from your licensed copy of each framework.
+
 ## Claude Code skills
 
 The skills in `.claude/skills/` load automatically when Claude Code runs in this repository. Example prompts:
@@ -94,8 +130,9 @@ The skills in `.claude/skills/` load automatically when Claude Code runs in this
 - "Draft a BIA for the orders service."
 - "Plan a tabletop DR test for all Tier 1 services."
 - "Plan a DR test for loss of the message bus."
+- "Are we ready for the SOC 2 audit starting December 1? Draft the evidence requests."
 
-Each skill runs the tiering script first, so drafts use current tiers and findings. The skills fill in what the data supports and mark everything else for the service owner to confirm. They do not invent impact ratings, RTOs, vendor SLAs, or runbook steps. [`examples/bia-orders.md`](examples/bia-orders.md) shows the output for one service.
+Each skill runs the relevant script first (tiering, or the control evidence checker), so drafts use current data and findings. The skills fill in what the data supports and mark everything else for the service or control owner to confirm. They do not invent impact ratings, RTOs, vendor SLAs, runbook steps, or evidence. [`examples/bia-orders.md`](examples/bia-orders.md) shows the output for one service.
 
 ## Using your own data
 
