@@ -1,0 +1,15 @@
+id,title,owner,frequency,automated,notes
+AC-01,Access requests approved before provisioning,IT Identity,quarterly,no,Sample of new joiners each quarter
+AC-02,Quarterly user access review,IT Identity,quarterly,no,Covers production and finance systems
+AC-03,MFA enforced on workforce SSO,IT Identity,continuous,yes,Daily export of the IdP policy and exceptions
+AC-04,Privileged access limited and reviewed,,quarterly,no,Owner left in September; not yet reassigned
+LG-01,Security events sent to central logging,Security Operations,continuous,yes,Ingestion health check
+LG-02,Alert triage within SLA reviewed monthly,Security Operations,monthly,no,
+IR-01,Incident response plan exercised,Security Operations,annual,no,Annual tabletop
+CM-01,Production changes approved before deploy,Platform Eng,continuous,yes,Branch protection and pipeline approval check
+BK-01,Backups complete and monitored,Platform Eng,continuous,yes,Backup job success report
+BK-02,Restore tested from backup,Platform Eng,quarterly,no,
+DR-01,Tier 1 disaster recovery test,Resilience,annual,no,Uses the tiering report for scope and order
+VR-01,Vendor risk assessed before onboarding,Third-Party Risk,quarterly,no,Sample of new vendors each quarter
+VR-02,Critical vendors reviewed annually,Third-Party Risk,annual,no,
+HR-01,Clean desk walkthrough,Facilities,semiannual,no,
